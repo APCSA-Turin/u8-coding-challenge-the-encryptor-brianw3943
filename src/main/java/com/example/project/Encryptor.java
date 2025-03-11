@@ -48,19 +48,26 @@ public class Encryptor {
         int index = 0;
         String decryptedString = "";
         String[][] decryptedMessage = new String[rows][columns];
+        if (encryptedMessage.length() > rows * columns) {
+            return "";
+        }
         for (int i = columns - 1; i >= 0; i--) {
             for (int j = 0; j < rows; j++) {
-                decryptedMessage[j][i] = encryptedMessage.substring(index, index + 1);
-                index++;
-            }
+                if (index < encryptedMessage.length()) {
+                    decryptedMessage[j][i] = encryptedMessage.substring(index, index + 1);
+                    index++;
+                } else {
+                    decryptedMessage[j][i] = "=";
+                }
+            } 
         }
         for (int i = 0; i < decryptedMessage.length; i++) {
             for (int j = 0; j < decryptedMessage[i].length; j++) {
                 decryptedString += decryptedMessage[i][j];
             }
         }
-        for (int i = decryptedString.length() - 1; i >= 0; i++) {
-            if (decryptedString.substring(i, i + 1) == "=") {
+        for (int i = decryptedString.length() - 1; i >= 0; i--) {
+            if (decryptedString.substring(i, i + 1).equals("=")) {
                 decryptedString = decryptedString.substring(0, decryptedString.length() - 1);
             } else {
                 break;
